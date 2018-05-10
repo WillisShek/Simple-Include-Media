@@ -1,0 +1,27 @@
+{
+  "name": "simple-include-media",
+  "version": "1.0.0",
+  "description": "A simple, all-rounded and easy-to-use media queries library for Sass(Scss)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WillisShek/simple-include-media.git"
+  },
+  "keywords": [
+    "sass",
+    "scss",
+    "media",
+    "css",
+    "style",
+    "html"
+  ],
+  "author": "Willis Shek",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/WillisShek/simple-include-media/issues"
+  },
+  "homepage": "https://github.com/WillisShek/simple-include-media#readme"
+}

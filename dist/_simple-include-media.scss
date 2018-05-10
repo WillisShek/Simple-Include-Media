@@ -1,0 +1,312 @@
+/*
+Simple Include Media by Willis Shek @ 2018
+License: MIT
+Inspired by @include-media by Eduardo Bouças and Hugo Giraudel.
+
+
+# simple-include-media
+A simple, all-rounded and easy-to-use media queries library in Sass(Scss).
+
+## How to use?
+
+
+.example-class {
+	@include media("! all & <desktop and landscape") {
+		// first css
+	}
+	@include media("h>360px | a>=1") {
+		// second css
+	}
+}
+
+
+will be compiled into
+
+
+@media not all and (max-width: 1023px) and (orientation: landscape) {
+	.example-class {
+		// first css
+	}
+}
+@media (min-height: 361px), (min-aspect-ratio: 1) {
+	.example-class {
+		// second css
+	}
+}
+
+
+**Do not use any space after the operators ">", "<", ">=", "<=" and "=".**
+
+
+## How does it work?
+Every time you @include media($string), it separates the input string according to space. Than it will parse the separated expressions by the following.
+1. Check whether it exists in $mediaExpressions. If it does, converts it. It can use different key to represent the same value. So you can use both "&" and "&&" to represent "and".
+2. It will check whether it contains the operators ">", "<", ">=", "<=" or "=". The format should be $dimension>=$value
+	- If true, $value will be converted into number. If it is alphabetic string, $mediaBreakpoints will be used.
+	- If $dimension is empty, "width" will be used. If not, it will return the same string. You can use "w" for "width", "h" for "height" and "a" for "aspect-ratio".
+	- The prefix "max-" and "min-" are added automatically according to the operator.
+	- No space is allow after $dimension and operators.
+3. If it doesn't exist in $mediaExpressions and doesn't have any operators, it will return the same expression.
+	- eg. "not" will return "not".
+	- So it uses the same logic as css media does.
+
+You can check the above example for a complicated use.
+
+
+## Important variables
+*****No space is allow in the key of variables.**
+
+### $mediaBreakpoints
+- Control the value when using ">", "<", ">=", "<=" or "=".
+- Do not use ">", "<", ">=", "<=" or "=" as key.
+
+### $mediaExpressions
+- Short form used to fast conversion of expressions.
+- It is not recommend but you can still use operators ">", "<", ">=", "<=" or "=" in the key.
+- You can use operators as value.
+- eg. ">=t": ">=tablet". In such case, ">=t" will become ">=tablet" and become "(min-width: 768px)" finally.
+
+### $mediaUnitSteps
+- Control the value added/subtracted when using ">" or "<".
+- Change it if you want to be more precise or rough, or use unit other than px, em and rem.
+
+## Remarks
+
+You can use map-merge too add keys without erasing the default values.
+- eg. $mediaBreakpoints: map-merge($mediaBreakpoints, ("XL": 1900px));
+
+For node-sass users, remember to add ; to the end of every @import.
+
+
+*/
+
+////
+/// @access public
+/// @author Willis Shek
+////
+
+/// Breakpoints which control the value when using ">", "<", ">=", "<=" or "=".
+/// @example scss - Create breakpoints with the labels "tablet" and "desktop"
+///  $mediaBreakpoints: (
+///  	"tablet": 768px,
+///  	"desktop": 1024px
+///  );
+$mediaBreakpoints: (
+	"phone": 480px,
+	"tablet": 768px,
+	"desktop": 1024px
+) !default;
+
+/// Expressions for fast conversion.
+/// @example scss - Create an expression for "(orientation: landscape)"
+///  $mediaExpressions: (
+///  	"landscape": "(orientation: landscape)"
+///  );
+$mediaExpressions: (
+	"landscape": "(orientation: landscape)",
+	"portrait": "(orientation: portrait)",
+	"!": "not",
+	// and
+	"&": "and",
+	"&&": "and",
+	// or
+	"or": ",",
+	"|": ",",
+	"||": ",",
+) !default;
+
+/// The smallest values for different units that will be added or subtracted for exclusive intervals (">" and "<")
+/// @example scss - Create steps for px and em
+///  $mediaUnitSteps: (
+///  	"px": 1,
+///  	"em": 0.01
+///  );
+$mediaUnitSteps: (
+	"px": 1,
+	"em": 0.01,
+	"rem": 0.01,
+	"none": 0.001 // for value with no unit, aspect ratio mainly
+) !default;
+
+/// convert string to number
+/// @access private
+@function toNumber( $string ) {
+	// Matrices
+	$strings: '0' '1' '2' '3' '4' '5' '6' '7' '8' '9';
+	$numbers: 0 1 2 3 4 5 6 7 8 9;
+	// Result
+	$result: 0;
+	$minus: false;
+	$divider: 0;
+	// Looping through all characters
+	@for $i from 1 through str-length($string) {
+		$character: str-slice($string, $i, $i);
+		@if $character == '-' { $minus: true; }
+		@else if $character == '.' { $divider: 1; }
+		@else {
+			$index: index($strings, $character);
+			// add unit
+			@if not $index {
+				$result: if($minus, $result * -1, $result);
+				@return addUnit($result, str-slice($string, $i));
+			}
+			$number: nth($numbers, $index);
+			// no decimal
+			@if $divider == 0 {
+				$result: $result * 10;
+			} @else { // have decimal
+				$divider: $divider * 10;
+				$number: $number / $divider;
+			}
+			$result: $result + $number;
+		}
+	}
+	@return if($minus, $result * -1, $result);
+}
+
+/// add unit to value
+/// @access private
+@function addUnit( $number, $unit ) {
+	$strings: 'px' 'cm' 'mm' '%' 'ch' 'pica' 'in' 'em' 'rem' 'pt' 'pc' 'ex' 'vw' 'vh' 'vmin' 'vmax';
+	$units: 1px 1cm 1mm 1% 1ch 1pica 1in 1em 1rem 1pt 1pc 1ex 1vw 1vh 1vmin 1vmax;
+	$index: index($strings, $unit);
+	// Unknow unit
+	@if not $index {
+		@warn "Unknown unit '#{$unit}'.";
+		@return false;
+	}
+	@return $number * nth($units, $index);
+}
+
+/// split the string into array
+/// @access private
+@function strSplit( $string, $separator ) {
+	// empty array/list
+	$split-arr: ();
+	// first index of separator in string
+	$index : str-index($string, $separator);
+	// loop through string
+	@while $index != null {
+		// get the substring from the first character to the separator
+		$item: str-slice($string, 1, $index - 1);
+		// push item to array
+		$split-arr: append($split-arr, $item);
+		// remove item and separator from string
+		$string: str-slice($string, $index + 1);
+		// find new index of separator
+		$index : str-index($string, $separator);
+	}
+	// add the remaining string to list (the last item)
+	$split-arr: append($split-arr, $string);
+
+	@return $split-arr;
+}
+
+/// Operators
+/// @access private
+$sMediaOperators: (">=",">","<=","<","=");
+
+/// get index of operator within a string
+/// @access private
+@function sMediaGetOperatorAndIndex( $expression ) {
+	@each $operator in $sMediaOperators {
+		$operatorIndex: str-index($expression, $operator);
+		@if $operatorIndex { @return $operator, $operatorIndex; }
+	}
+	@return null;
+}
+
+/// get prefix ("min-", "max-", "")
+/// @access private
+@function sMediaGetPrefix( $operator ) {
+	@if $operator == "=" {
+		@return "";
+	} @else {
+		@return if(index($sMediaOperators, $operator)<3, "min-", "max-");
+	}
+}
+
+/// get dimension, such as "width", "height" or "aspect-ratio"
+/// @access private
+@function sMediaGetDimension( $expression, $operator, $operatorIndex ) {
+	$slicedStr: str-slice($expression, 0, $operatorIndex - 1);
+	$dimension: "width";
+	@if str-length($slicedStr) > 0 {
+		@if ($slicedStr == "w") {
+			$dimension: "width";
+		} @else if ($slicedStr == "h") {
+			$dimension: "height";
+		} @else if ($slicedStr == "a" or $slicedStr == "aspect") {
+			$dimension: "aspect-ratio";
+		} @else {
+			$dimension: $slicedStr;
+		}
+	}
+	@return $dimension;
+}
+
+/// get numerical value for breakpoint
+/// @access private
+@function sMediaGetBreakpointValue( $expression, $operator, $operatorIndex ) {
+	$value: str-slice($expression, $operatorIndex + str-length($operator));
+	// get value from breakpoints
+	@if map-has-key($mediaBreakpoints, $value) {
+		$value: map-get($mediaBreakpoints, $value);
+	} @else {
+		$value: toNumber($value);
+	}
+	// get unit step
+	$theUnit: unit($value);
+	$theUnit: if($theUnit=="", "none", $theUnit);
+	@if map-has-key($mediaUnitSteps, $theUnit) {
+		@if ($operator == ">" or $operator == "<") {
+			$step: map-get($mediaUnitSteps, $theUnit);
+			$value: if($operator == ">", $value + $step, $value - $step);
+		}
+	} @else {
+		@warn "Please provide a valid unit or add the corresponding unit '#{$theUnit}' to $mediaUnitSteps";
+		@return false;
+	}
+	@return $value;
+}
+
+/// parse expression
+/// @access private
+@function sMediaParseExpression( $expression ) {
+	// if there is expression
+	@if map-has-key($mediaExpressions, $expression) {
+		$expression: map-get($mediaExpressions, $expression);
+	}
+	$operatorAndIndex: sMediaGetOperatorAndIndex($expression);
+	// return the original string if no operator found.
+	@if ($operatorAndIndex == null) { @return $expression; }
+	// parse condition
+	$operator: nth($operatorAndIndex, 1);
+	$operatorIndex: nth($operatorAndIndex, 2);
+	$prefix: sMediaGetPrefix( $operator );
+	$dimension: sMediaGetDimension( $expression, $operator, $operatorIndex );
+	$value: sMediaGetBreakpointValue( $expression, $operator, $operatorIndex );
+	@return "(#{$prefix}#{$dimension}: #{$value})";
+}
+
+/// return condition
+/// @access private
+@function sMediaGetCondition( $expressionString ) {
+	$expressions: strSplit($expressionString, " ");
+	$result: "";
+	@each $expression in $expressions {
+		$str: unquote(sMediaParseExpression( $expression ));
+		@if $result == "" {
+			$result: $str;
+		} @else {
+			$result: append($result, $str, space);
+		}
+	}
+	@return $result;
+}
+
+/// mixin for create media query
+/// @param {String} $expressionString - Input string for creating media query
+@mixin media($expressionString) {
+	@media #{sMediaGetCondition( $expressionString )} { @content; };
+}
