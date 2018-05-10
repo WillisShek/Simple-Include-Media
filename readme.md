@@ -8,12 +8,12 @@ In cmd, run `npm i simple-include-media --save-dev` and include `_simple-include
 ### Manual
 Download the file `dist/_simple-include-media.scss` and import it.
 
-### Import
+## How to Import
 
-#### Import directly via Scss directly
+### Import directly via Scss directly
 Type `@import "path/to/simple-include-media";` in you Scss file.
 
-#### Import via Sass loader of Webpack
+### Import via Sass loader of Webpack
 In your config file, add `includePaths: ["./path/to/simple-include-media/dist"]` in option of sass-loader and type `@import "simple-include-media";` in you Scss file.
 
 ## Example
