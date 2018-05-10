@@ -54,7 +54,7 @@ will be compiled into
 Every time you @include media($string), it separates the input string according to space. Than it will parse the separated expressions by the following.
 1. Check whether it exists in $mediaExpressions. If it does, converts it. It can use different key to represent the same value. So you can use both `"&"` and `"&&"` to represent `"and"`.
 2. It will check whether it contains the operators `">"`, `"<"`, `">="`, `"<="` or `"="`. The format should be `$dimension>=$value`
-	- If true, `$value` will be converted into number. If it is alphabetic string, $mediaBreakpoints will be used.
+	- If true, `$value` will be converted into number. If it can find a key in `$mediaBreakpoints`, the corresponding value will be used.
 	- If `$dimension` is empty, "width" will be used. If not, it will return the same string. You can use `"w"` for `"width"`, `"h"` for `"height"` and `"a"` for `"aspect-ratio"`.
 	- The prefix `"max-"` and `"min-"` are added automatically according to the operator.
 	- No space is allow after `$dimension` and operators.
