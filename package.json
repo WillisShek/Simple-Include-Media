@@ -1,6 +1,6 @@
 {
   "name": "simple-include-media",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A simple, all-rounded and easy-to-use media queries library for Sass(Scss)",
   "main": "index.js",
   "scripts": {
