@@ -2,11 +2,13 @@
 A simple, all-rounded and easy-to-use media queries library in Sass(Scss).
 
 ## How to install
+
 ### NPM
 In cmd, run `npm i simple-include-media --save-dev` and include `_simple-include-media.scss` inside `dist` in your build. The default directory should be `"node_modules/simple-include-media/dist"`.
 
 ### Manual
 Download the file `dist/_simple-include-media.scss` and import it.
+
 
 ## How to Import
 
@@ -15,6 +17,7 @@ Type `@import "path/to/simple-include-media";` in you Scss file.
 
 ### Import via Sass loader of Webpack
 In your config file, add `includePaths: ["./path/to/simple-include-media/dist"]` in option of sass-loader and type `@import "simple-include-media";` in you Scss file.
+
 
 ## Example
 
