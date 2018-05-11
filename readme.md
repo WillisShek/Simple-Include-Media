@@ -27,7 +27,7 @@ In cmd, run `npm i simple-include-media --save-dev` and include `_simple-include
 Download the file `dist/_simple-include-media.scss` and import it.
 
 
-## How to Import
+## How to import
 ### Import directly via Scss directly
 Type `@import "path/to/simple-include-media";` in you Scss file.
 
