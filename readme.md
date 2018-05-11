@@ -29,7 +29,7 @@ Download the file `dist/_simple-include-media.scss` and import it.
 
 
 ### Import
-#### Import directly via Scss directly
+#### Import directly via Scss
 Type `@import "path/to/simple-include-media";` in you Scss file.
 
 #### Import via Sass loader of Webpack
