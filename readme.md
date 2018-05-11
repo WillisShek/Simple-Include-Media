@@ -19,25 +19,29 @@ will become
 ```
 **Do not use any space after the operators `">"`, `"<"`, `">="`, `"<="` and `"="`.**
 
-## How to install
-### NPM
+## Getting Started
+### Install
+#### NPM
 In cmd, run `npm i simple-include-media --save-dev` and include `_simple-include-media.scss` inside `dist` in your build. The default directory should be `"node_modules/simple-include-media/dist"`.
 
-### Manual
+#### Manual
 Download the file `dist/_simple-include-media.scss` and import it.
 
 
-## How to import
-### Import directly via Scss directly
+### Import
+#### Import directly via Scss directly
 Type `@import "path/to/simple-include-media";` in you Scss file.
 
-### Import via Sass loader of Webpack
+#### Import via Sass loader of Webpack
 In your config file, add `includePaths: ["./path/to/simple-include-media/dist"]` in option of sass-loader and type `@import "simple-include-media";` in you Scss file.
+
+### Use
+`@include media($yourExpression) {...}`
 
 
 ## How does it work?
 Every time you @include media($string), it separates the input string according to space. Than it will parse the separated expressions by the following.
-1. Check whether it exists in $mediaExpressions. If it does, converts it. It can use different key to represent the same value. So you can use both `"&"` and `"&&"` to represent `"and"`.
+1. Check whether it exists in $mediaExpressions. If it does, converts it. It can use different key to represent the same value. So you can use both `"&"` and `"&&"` to represent `"and"`.npm npm
 2. It will check whether it contains the operators `">"`, `"<"`, `">="`, `"<="` or `"="`. The format should be `$dimension>=$value`
 	- If true, `$value` will be converted into number. If it can find a key in `$mediaBreakpoints`, the corresponding value will be used.
 	- If `$dimension` is empty, "width" will be used. If not, it will return the same string. You can use `"w"` for `"width"`, `"h"` for `"height"` and `"a"` for `"aspect-ratio"`.
