@@ -38,6 +38,9 @@ In your config file, add `includePaths: ["./path/to/simple-include-media/dist"]`
 ### Use
 `@include media($yourExpression) {...}`
 
+### Documentation
+[https://willisshek.github.io/Simple-Include-Media/index.html](https://willisshek.github.io/Simple-Include-Media/index.html)
+
 
 ## How does it work?
 Every time you @include media($string), it separates the input string according to space. Than it will parse the separated expressions by the following.
