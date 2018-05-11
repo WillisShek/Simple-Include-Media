@@ -43,7 +43,7 @@ In your config file, add `includePaths: ["./path/to/simple-include-media/dist"]`
 
 
 ## How does it work?
-Every time you @include media($string), it separates the input string according to space. Than it will parse the separated expressions by the following.
+Every time you `@include media($string)`, it separates the input string according to space. Than it will parse the separated expressions by the following.
 1. Check whether it exists in $mediaExpressions. If it does, converts it. It can use different key to represent the same value. So you can use both `"&"` and `"&&"` to represent `"and"`.npm npm
 2. It will check whether it contains the operators `">"`, `"<"`, `">="`, `"<="` or `"="`. The format should be `$dimension>=$value`
 	- If true, `$value` will be converted into number. If it can find a key in `$mediaBreakpoints`, the corresponding value will be used.
