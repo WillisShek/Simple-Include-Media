@@ -105,4 +105,4 @@ will be compiled into
 You can use `map-merge` too add keys without erasing the default values.
 - eg. `$mediaBreakpoints: map-merge($mediaBreakpoints, ("XL": 1900px));`
 
-For node-sass users, remember to add ; to the end of every @import.
+Remember to add ; to the end of every `@import`.
