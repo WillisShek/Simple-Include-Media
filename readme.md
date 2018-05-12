@@ -17,7 +17,7 @@ will become
 	}
 }
 ```
-**Do not use any space after the operators `">"`, `"<"`, `">="`, `"<="` and `"="`.**
+**Do not use any space right after the operators `">"`, `"<"`, `">="`, `"<="` and `"="`.**
 
 ## Getting Started
 ### Install
