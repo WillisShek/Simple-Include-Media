@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "generate-doc": "sassdoc dist -c sassdoc.config -d docs",
-    "publish": "npm run generate-doc && npm publish"
+    "publish-patch": "npm version patch && npm run generate-doc && npm publish"
   },
   "repository": {
     "type": "git",
