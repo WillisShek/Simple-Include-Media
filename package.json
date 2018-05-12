@@ -4,8 +4,8 @@
   "description": "A simple, all-rounded and easy-to-use media queries library for Sass(Scss)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "generate-doc": "sassdoc dist -c sassdoc.config -d docs"
+    "generate-doc": "sassdoc dist -c sassdoc.config -d docs",
+    "publish": "npm run generate-doc && npm publish"
   },
   "repository": {
     "type": "git",
