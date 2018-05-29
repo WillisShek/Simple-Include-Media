@@ -114,4 +114,4 @@ will be compiled into
 
 ## Remarks
 
-Remember to add ; to the end of every `@import` to avoid potential error.
+Remember to add `;` to the end of every `@import` to avoid potential error.
