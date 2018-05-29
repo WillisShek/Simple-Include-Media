@@ -1,5 +1,6 @@
 .sass-cache/
 *.css.map
-sassdoc.config
+.sassdocrc
 docs/
 .gitattributes
+node_modules/
