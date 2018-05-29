@@ -76,9 +76,7 @@ Every time you @include media($string), it separates the input string according 
 	}
 }
 
-
 will be compiled into
-
 
 @media not all and (max-width: 1023px) and (orientation: landscape) {
 	.example-class {
@@ -90,7 +88,6 @@ will be compiled into
 		// second css
 	}
 }
-
 
 
 ## Important variables
@@ -112,11 +109,17 @@ will be compiled into
 
 ## Important functions
 
+### mediaAddBreakpoints
+- Add new breakpoint(s) without erasing the old one.
+- eg. $mediaBreakpoints: mediaAddBreakpoints(("retina": 1920px)) // be carefull there are double brackets;
+- Due to the limitation of scss, you must add $mediaBreakpoints: at the beginning;
+- It's the same as $mediaBreakpoints: map-merge($mediaBreakpoints, ("retina": 1920px));, but more convenience.
+
 ### mediaAddExpressions
 - Add new expression(s) without erasing the old one.
-- eg. $mediaBreakpoints: mediaAddExpressions(("XL": 1900px)) // be carefull there are double brackets;
-- Due to the limitation of scss, you will have to add $mediaBreakpoints: at the beginning;
-- It's the same as $mediaBreakpoints: map-merge($mediaBreakpoints, ("XL": 1900px));, but more convenience.
+- eg. $mediaExpressions: mediaAddExpressions(("small": "<=phone")) // be carefull there are double brackets;
+- Due to the limitation of scss, you must add $mediaExpressions: at the beginning;
+- It's the same as $mediaExpressions: map-merge($mediaExpressions, ("small": "<=phone"));, but more convenience.
 
 ## Remarks
 
@@ -141,6 +144,14 @@ $mediaBreakpoints: (
 	"desktop": 1024px
 ) !default;
 
+/// Function for convenient adding breakpoints
+/// @param {Map} $newBreakpoints - The new breakpoints to be added
+/// @example scss - add a new breakpoint
+///  $mediaBreakpoints: mediaAddBreakpoints(("retina": 1920px));
+@function mediaAddBreakpoints($newBreakpoints) {
+	@return map-merge($mediaBreakpoints, $newBreakpoints);
+}
+
 /// Expressions for fast conversion.
 /// @example scss - Create an expression for "(orientation: landscape)"
 ///  $mediaExpressions: (
@@ -159,6 +170,14 @@ $mediaExpressions: (
 	"||": ",",
 ) !default;
 
+/// Function for convenient adding expressions
+/// @param {Map} $newExpressions - The new expressions to be added
+/// @example scss - add a new expressions
+///  $mediaExpressions: mediaAddExpressions(("small": "<=phone"));
+@function mediaAddExpressions($newExpressions) {
+	@return map-merge($mediaExpressions, $newExpressions);
+}
+
 /// The smallest values for different units that will be added or subtracted for exclusive intervals (">" and "<")
 /// @example scss - Create steps for px and em
 ///  $mediaUnitSteps: (
@@ -171,14 +190,6 @@ $mediaUnitSteps: (
 	"rem": 0.01,
 	"none": 0.001 // for value with no unit, aspect ratio mainly
 ) !default;
-
-/// Function for convenient adding expressions
-/// @param {Map} $newExpressions - The new expressions to be added
-/// @example scss - add a new expressions
-///  $mediaExpressions: mediaAddExpressions( ("small": "<=phone") );
-@function mediaAddExpressions($newExpressions) {
-	@return map-merge($mediaExpressions, $newExpressions);
-}
 
 /// convert string to number
 /// @access private

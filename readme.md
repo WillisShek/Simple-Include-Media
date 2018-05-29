@@ -106,11 +106,17 @@ will be compiled into
 
 ## Important functions
 
+### mediaAddBreakpoints
+- Add new breakpoint(s) without erasing the old one.
+- eg. `$mediaBreakpoints: mediaAddBreakpoints(("retina": 1920px)) // be carefull there are double brackets`;
+- Due to the limitation of scss, you must add `$mediaBreakpoints:` at the beginning;
+- It's the same as `$mediaBreakpoints: map-merge($mediaBreakpoints, ("retina": 1920px));`, but more convenience.
+
 ### mediaAddExpressions
 - Add new expression(s) without erasing the old one.
-- eg. `$mediaBreakpoints: mediaAddExpressions(("XL": 1900px)) // be carefull there are double brackets`;
-- Due to the limitation of scss, you will have to add `$mediaBreakpoints:` at the beginning;
-- It's the same as `$mediaBreakpoints: map-merge($mediaBreakpoints, ("XL": 1900px));`, but more convenience.
+- eg. `$mediaExpressions: mediaAddExpressions(("small": "<=phone")) // be carefull there are double brackets`;
+- Due to the limitation of scss, you must add `$mediaExpressions:` at the beginning;
+- It's the same as `$mediaExpressions: map-merge($mediaExpressions, ("small": "<=phone"));`, but more convenience.
 
 ## Remarks
 
