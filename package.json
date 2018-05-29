@@ -39,5 +39,8 @@
     "postcss-cli": "^5.0.0",
     "postcss-discard-comments": "^2.0.4",
     "sass-lint": "^1.12.1"
+  },
+  "resolutions": {
+    "node-sass/**/request": "^2.82.0"
   }
 }
