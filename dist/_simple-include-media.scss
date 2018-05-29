@@ -27,7 +27,7 @@ will become
 
 ## What's new in 1.1.x?
 It now supports recursive parsing! You can now use the new function mediaAddExpressions to add expressions like "medium": ">phone & <=tablet" to further manager you media queries. You can find an example under folder "example".
-***** Please be careful when adding expression to avoid any endless loop. eg. "not": "not all and is not allowed. **
+*****Please be careful when adding expression to avoid any endless loop. eg. "not": "not all and is not allowed.**
 
 ## Getting Started
 ### Install
