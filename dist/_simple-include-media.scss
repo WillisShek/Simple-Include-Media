@@ -60,7 +60,7 @@ Every time you @include media($string), it separates the input string according 
 	- If $dimension is empty, "width" will be used. If not, it will return the same string. You can use "w" for "width", "h" for "height" and "a" for "aspect-ratio".
 	- The prefix "max-" and "min-" are added automatically according to the operator.
 	- No space is allow after $dimension and operators.
-3. If it doesn't exist in $mediaExpressions and doesn't have any operators, it will return the same expression.
+3. If it doesn"t exist in $mediaExpressions and doesn"t have any operators, it will return the same expression.
 	- eg. "not" will return "not".
 	- So it uses the same logic as css media does.
 
@@ -195,7 +195,7 @@ $mediaUnitSteps: (
 /// @access private
 @function toNumber( $string ) {
 	// Matrices
-	$strings: '0' '1' '2' '3' '4' '5' '6' '7' '8' '9';
+	$strings: "0" "1" "2" "3" "4" "5" "6" "7" "8" "9";
 	$numbers: 0 1 2 3 4 5 6 7 8 9;
 	// Result
 	$result: 0;
@@ -204,8 +204,8 @@ $mediaUnitSteps: (
 	// Looping through all characters
 	@for $i from 1 through str-length($string) {
 		$character: str-slice($string, $i, $i);
-		@if $character == '-' { $minus: true; }
-		@else if $character == '.' { $divider: 1; }
+		@if $character == "-" { $minus: true; }
+		@else if $character == "." { $divider: 1; }
 		@else {
 			$index: index($strings, $character);
 			// add unit
@@ -230,12 +230,12 @@ $mediaUnitSteps: (
 /// add unit to value
 /// @access private
 @function addUnit( $number, $unit ) {
-	$strings: 'px' 'cm' 'mm' '%' 'ch' 'pica' 'in' 'em' 'rem' 'pt' 'pc' 'ex' 'vw' 'vh' 'vmin' 'vmax';
+	$strings: "px" "cm" "mm" "%" "ch" "pica" "in" "em" "rem" "pt" "pc" "ex" "vw" "vh" "vmin" "vmax";
 	$units: 1px 1cm 1mm 1% 1ch 1pica 1in 1em 1rem 1pt 1pc 1ex 1vw 1vh 1vmin 1vmax;
 	$index: index($strings, $unit);
 	// Unknow unit
 	@if not $index {
-		@warn "Unknown unit '#{$unit}'.";
+		@error "Unknown unit "#{$unit}".";
 		@return false;
 	}
 	@return $number * nth($units, $index);
@@ -245,29 +245,29 @@ $mediaUnitSteps: (
 /// @access private
 @function strSplit( $string, $separator ) {
 	// empty array/list
-	$split-arr: ();
+	$splitArr: ();
 	// first index of separator in string
-	$index : str-index($string, $separator);
+	$index: str-index($string, $separator);
 	// loop through string
 	@while $index != null {
 		// get the substring from the first character to the separator
 		$item: str-slice($string, 1, $index - 1);
 		// push item to array
-		$split-arr: append($split-arr, $item);
+		$splitArr: append($splitArr, $item);
 		// remove item and separator from string
 		$string: str-slice($string, $index + 1);
 		// find new index of separator
-		$index : str-index($string, $separator);
+		$index: str-index($string, $separator);
 	}
 	// add the remaining string to list (the last item)
-	$split-arr: append($split-arr, $string);
+	$splitArr: append($splitArr, $string);
 
-	@return $split-arr;
+	@return $splitArr;
 }
 
 /// Operators
 /// @access private
-$sMediaOperators: (">=",">","<=","<","=");
+$sMediaOperators: (">=", ">", "<=", "<", "=");
 
 /// get index of operator within a string
 /// @access private
@@ -327,7 +327,7 @@ $sMediaOperators: (">=",">","<=","<","=");
 			$value: if($operator == ">", $value + $step, $value - $step);
 		}
 	} @else {
-		@warn "Please provide a valid unit or add the corresponding unit '#{$theUnit}' to $mediaUnitSteps";
+		@error "Please provide a valid unit or add the corresponding unit "#{$theUnit}" to $mediaUnitSteps";
 		@return false;
 	}
 	@return $value;
