@@ -1,0 +1,24 @@
+files:
+  include: 'dist/*.s+(a|c)ss'
+rules:
+  indentation:
+    - 1
+    - size: 'tab'
+  space-between-parens:
+    - 0
+  variable-name-format:
+    - 1
+    - convention: camelcase
+  function-name-format:
+    - 1
+    - convention: camelcase
+  quotes:
+    - 1
+    - style: double
+  brace-style:
+    - 0
+  leading-zero:
+    - 1
+    - include: true
+  no-css-comments:
+    - 0
