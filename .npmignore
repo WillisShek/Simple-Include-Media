@@ -2,5 +2,4 @@
 *.css.map
 .sassdocrc
 docs/
-.gitattributes
 node_modules/
