@@ -19,6 +19,10 @@ will become
 ```
 **Do not use any space right after the operators `">"`, `"<"`, `">="`, `"<="` and `"="`.**
 
+## What's new in 1.1.x?
+It now supports recursive parsing! You can now use the new function `mediaAddExpressions` to add expressions like `"medium": ">phone & <=tablet"` to further manager you media queries. You can find an example under folder "example".
+***** Please be careful when adding expression to avoid any endless loop. eg. `"not": "not all and` is not allowed. **
+
 ## Getting Started
 ### Install
 #### NPM
@@ -58,7 +62,7 @@ Every time you `@include media($string)`, it separates the input string accordin
 ## A more complicated example
 ```
 .example-class {
-	@include media("! all && <desktop and landscape") {
+	@include media("! <desktop and landscape") {
 		// first css
 	}
 	@include media("h>360px | a>=1") {
@@ -100,9 +104,14 @@ will be compiled into
 - Control the value added/subtracted when using `">" `or `"<"`.
 - Change it if you want to be more precise or rough, or use unit other than px, em and rem.
 
+## Important functions
+
+### mediaAddExpressions
+- Add new expression(s) without erasing the old one.
+- eg. `$mediaBreakpoints: mediaAddExpressions(("XL": 1900px)) // be carefull there are double brackets`;
+- Due to the limitation of scss, you will have to add `$mediaBreakpoints:` at the beginning;
+- It's the same as `$mediaBreakpoints: map-merge($mediaBreakpoints, ("XL": 1900px));`, but more convenience.
+
 ## Remarks
 
-You can use `map-merge` too add keys without erasing the default values.
-- eg. `$mediaBreakpoints: map-merge($mediaBreakpoints, ("XL": 1900px));`
-
-Remember to add ; to the end of every `@import`.
+Remember to add ; to the end of every `@import` to avoid potential error.

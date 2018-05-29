@@ -4,10 +4,11 @@ License: MIT
 Inspired by @include-media by Eduardo Bouças and Hugo Giraudel.
 A simple, all-rounded and easy-to-use media queries library in Sass(Scss).
 
-## How to use
-@include media($yourExpression) {...}
+# Simple Include Media
+A simple, all-rounded and easy-to-use media queries library in Sass(Scss).
 
-### Example
+## How to use
+
 .example-class {
 	@include media(">=phone & <tablet") {
 		// your css
@@ -22,10 +23,33 @@ will become
 	}
 }
 
-**Do not use any space after the operators ">", "<", ">=", "<=" and "=".**
+**Do not use any space right after the operators ">", "<", ">=", "<=" and "=".**
+
+## What's new in 1.1.x?
+It now supports recursive parsing! You can now use the new function mediaAddExpressions to add expressions like "medium": ">phone & <=tablet" to further manager you media queries. You can find an example under folder "example".
+***** Please be careful when adding expression to avoid any endless loop. eg. "not": "not all and is not allowed. **
+
+## Getting Started
+### Install
+#### NPM
+In cmd, run npm i simple-include-media --save-dev and include _simple-include-media.scss inside dist in your build. The default directory should be "node_modules/simple-include-media/dist".
+
+#### Manual
+Download the file dist/_simple-include-media.scss and import it.
+
+
+### Import
+#### Import directly via Scss
+Type @import "path/to/simple-include-media"; in you Scss file.
+
+#### Import via Sass loader of Webpack
+In your config file, add includePaths: ["./path/to/simple-include-media/dist"] in option of sass-loader and type @import "simple-include-media"; in you Scss file.
+
+### Use
+@include media($yourExpression) {...}
 
 ### Documentation
-https://willisshek.github.io/Simple-Include-Media/index.html
+[https://willisshek.github.io/Simple-Include-Media/index.html](https://willisshek.github.io/Simple-Include-Media/index.html)
 
 
 ## How does it work?
@@ -44,7 +68,7 @@ Every time you @include media($string), it separates the input string according 
 ## A more complicated example
 
 .example-class {
-	@include media("! all && <desktop and landscape") {
+	@include media("! <desktop and landscape") {
 		// first css
 	}
 	@include media("h>360px | a>=1") {
@@ -86,13 +110,17 @@ will be compiled into
 - Control the value added/subtracted when using ">" or "<".
 - Change it if you want to be more precise or rough, or use unit other than px, em and rem.
 
+## Important functions
+
+### mediaAddExpressions
+- Add new expression(s) without erasing the old one.
+- eg. $mediaBreakpoints: mediaAddExpressions(("XL": 1900px)) // be carefull there are double brackets;
+- Due to the limitation of scss, you will have to add $mediaBreakpoints: at the beginning;
+- It's the same as $mediaBreakpoints: map-merge($mediaBreakpoints, ("XL": 1900px));, but more convenience.
+
 ## Remarks
 
-You can use map-merge too add keys without erasing the default values.
-- eg. $mediaBreakpoints: map-merge($mediaBreakpoints, ("XL": 1900px));
-
-Remember to add ; to the end of every @import.
-
+Remember to add ; to the end of every @import to avoid potential error.
 
 */
 
@@ -121,7 +149,7 @@ $mediaBreakpoints: (
 $mediaExpressions: (
 	"landscape": "(orientation: landscape)",
 	"portrait": "(orientation: portrait)",
-	"!": "not",
+	"!": "not all and",
 	// and
 	"&": "and",
 	"&&": "and",
@@ -143,6 +171,14 @@ $mediaUnitSteps: (
 	"rem": 0.01,
 	"none": 0.001 // for value with no unit, aspect ratio mainly
 ) !default;
+
+/// Function for convenient adding expressions
+/// @param {Map} $newExpressions - The new expressions to be added
+/// @example scss - add a new expressions
+///  $mediaExpressions: mediaAddExpressions( ("small": "<=phone") );
+@function mediaAddExpressions($newExpressions) {
+	@return map-merge($mediaExpressions, $newExpressions);
+}
 
 /// convert string to number
 /// @access private
@@ -292,6 +328,10 @@ $sMediaOperators: (">=",">","<=","<","=");
 	// if there is expression
 	@if map-has-key($mediaExpressions, $expression) {
 		$expression: map-get($mediaExpressions, $expression);
+		$expressions: strSplit($expression, " ");
+		@if $expressions != $expression {
+			$expression: quote(sMediaGetCondition( $expression ));
+		}
 	}
 	$operatorAndIndex: sMediaGetOperatorAndIndex($expression);
 	// return the original string if no operator found.

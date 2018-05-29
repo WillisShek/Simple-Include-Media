@@ -1,0 +1,18 @@
+@import "../dist/simple-include-media";
+
+// add an expression
+$mediaExpressions: mediaAddExpressions((
+	"XS": "<=phone",
+	"S": ">phone & <=tablet",
+	"M": ">tablet & <=desktop",
+	"L": ">desktop"
+));
+
+.example-class {
+	@include media("! S & landscape") {
+		display: block;
+	}
+	@include media("h>360px | a>=1") {
+		display: inline-block;
+	}
+}

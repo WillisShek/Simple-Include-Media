@@ -4,8 +4,11 @@
   "description": "A simple, all-rounded and easy-to-use media queries library for Sass(Scss)",
   "main": "index.js",
   "scripts": {
-    "generate-doc": "sassdoc dist -c sassdoc.config -d docs",
-    "publish-patch": "npm version patch && npm run generate-doc && npm publish"
+    "generate-doc": "sassdoc dist -d docs",
+    "compile-example": "node-sass example/input.scss example/output.css --output-style nested && postcss example/output.css -r --no-map --use postcss-discard-comments",
+    "publish-npm": "npm run generate-doc && npm publish",
+    "publish-patch": "npm version patch && npm run publish-npm",
+    "publish-minor": "npm version minor && npm run publish-npm"
   },
   "repository": {
     "type": "git",
@@ -24,5 +27,10 @@
   "bugs": {
     "url": "https://github.com/WillisShek/simple-include-media/issues"
   },
-  "homepage": "https://github.com/WillisShek/simple-include-media#readme"
+  "homepage": "https://github.com/WillisShek/simple-include-media#readme",
+  "devDependencies": {
+    "node-sass": "^4.9.0",
+    "postcss-cli": "^5.0.0",
+    "postcss-discard-comments": "^2.0.4"
+  }
 }

@@ -1,0 +1,8 @@
+@charset "UTF-8";
+@media not all and (min-width: 481px) and (max-width: 768px) and (orientation: landscape){
+  .example-class{
+    display:block; } }
+
+@media (min-height: 361px), (min-aspect-ratio: 1){
+  .example-class{
+    display:inline-block; } }
