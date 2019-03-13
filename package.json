@@ -1,6 +1,6 @@
 {
   "name": "simple-include-media",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "sasslintConfig": "lint/.sasslintrc",
   "description": "A simple, all-rounded and easy-to-use media queries library for Sass(Scss)",
   "main": "index.js",
@@ -35,10 +35,11 @@
   },
   "homepage": "https://github.com/WillisShek/simple-include-media#readme",
   "devDependencies": {
-    "node-sass": "^4.9.4",
-    "postcss-cli": "^5.0.0",
+    "node-sass": "^4.11.0",
+    "postcss-cli": "^5.0.1",
     "postcss-discard-comments": "^2.0.4",
-    "sass-lint": "^1.12.1"
+    "sass-lint": "^1.12.1",
+    "sassdoc": "^2.5.1"
   },
   "resolutions": {
     "node-sass/**/request": "^2.82.0"
